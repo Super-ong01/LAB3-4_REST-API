@@ -1,5 +1,7 @@
 package com.app.library.models;
 
+// LAB 3: annotated for Lab 3 identification
+
 public class Book {
 
     private Long id;
@@ -14,6 +16,7 @@ public class Book {
     public Book() {}
 
     // Parameterized constructor
+    // Create a Book object. Note: `id` is expected to be set externally (e.g., by controller or test).
     public Book(String title, String author, int publicationYear, String genre, int availableCopies) {
         this.title = title;
         this.author = author;

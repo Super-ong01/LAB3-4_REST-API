@@ -1,5 +1,7 @@
 package com.app.library.models;
 
+// LAB 3: annotated for Lab 3 identification
+
 import java.time.LocalDate;
 
 public class Member {
@@ -15,6 +17,7 @@ public class Member {
     public Member() {}
 
     // Parameterized constructor
+    // Create a Member with membership dates. `id` should be assigned separately.
     public Member(String name, String email, String phoneNumber, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.email = email;

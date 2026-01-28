@@ -1,6 +1,6 @@
-/Users/lavanyas/Downloads/library/src/main/java/com/app/library/LibraryApplication.java
-/Users/lavanyas/Downloads/library/src/main/java/com/app/library/controllers/LibraryController.java
-/Users/lavanyas/Downloads/library/src/main/java/com/app/library/models/Book.java
-/Users/lavanyas/Downloads/library/src/main/java/com/app/library/models/BorrowingRecord.java
-/Users/lavanyas/Downloads/library/src/main/java/com/app/library/models/Member.java
-/Users/lavanyas/Downloads/library/src/main/java/com/app/library/services/LibraryService.java
+/workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library/src/main/java/com/app/library/LibraryApplication.java
+/workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library/src/main/java/com/app/library/controllers/LibraryController.java
+/workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library/src/main/java/com/app/library/models/Book.java
+/workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library/src/main/java/com/app/library/models/BorrowingRecord.java
+/workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library/src/main/java/com/app/library/models/Member.java
+/workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library/src/main/java/com/app/library/services/LibraryService.java
