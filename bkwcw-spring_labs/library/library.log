@@ -1,0 +1,29 @@
+nohup: ignoring input
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.3)
+
+2026-01-27T16:13:00.905Z  INFO 6754 --- [library] [           main] com.app.library.LibraryApplication       : Starting LibraryApplication v0.0.1-SNAPSHOT using Java 21.0.8 with PID 6754 (/workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library/target/library-0.0.1-SNAPSHOT.jar started by vscode in /workspaces/java/Lab3-4_Rest-API/bkwcw-spring_labs/library)
+2026-01-27T16:13:00.910Z  INFO 6754 --- [library] [           main] com.app.library.LibraryApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-01-27T16:13:02.193Z  INFO 6754 --- [library] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-27T16:13:02.213Z  INFO 6754 --- [library] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-27T16:13:02.215Z  INFO 6754 --- [library] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2026-01-27T16:13:02.250Z  INFO 6754 --- [library] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-27T16:13:02.252Z  INFO 6754 --- [library] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1254 ms
+2026-01-27T16:13:02.796Z  INFO 6754 --- [library] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-27T16:13:02.813Z  INFO 6754 --- [library] [           main] com.app.library.LibraryApplication       : Started LibraryApplication in 2.545 seconds (process running for 3.335)
+2026-01-27T16:13:07.878Z  INFO 6754 --- [library] [nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-27T16:13:07.879Z  INFO 6754 --- [library] [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-27T16:13:07.880Z  INFO 6754 --- [library] [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-01-27T16:14:02.374Z  INFO 6754 --- [library] [nio-8080-exec-1] c.a.l.controllers.LibraryController      : Returning list of books: []
+2026-01-27T16:16:00.426Z  INFO 6754 --- [library] [nio-8080-exec-6] c.a.l.controllers.LibraryController      : Returning list of books: []
+2026-01-27T16:17:15.197Z  INFO 6754 --- [library] [io-8080-exec-10] c.a.l.controllers.LibraryController      : Added book id=1
+2026-01-27T16:18:21.087Z  INFO 6754 --- [library] [nio-8080-exec-2] c.a.l.controllers.LibraryController      : Added book id=1
+2026-01-27T16:18:56.459Z  INFO 6754 --- [library] [nio-8080-exec-4] c.a.l.controllers.LibraryController      : Returning list of books: [Book{id=1, title='Demo Book', author='Demo', publicationYear=2026, genre='Sample', availableCopies=2}, Book{id=1, title='Clean Code', author='Robert C. Martin', publicationYear=2008, genre='Programming', availableCopies=3}]
+2026-01-27T16:19:04.223Z  INFO 6754 --- [library] [nio-8080-exec-3] c.a.l.controllers.LibraryController      : Returning list of books: [Book{id=1, title='Demo Book', author='Demo', publicationYear=2026, genre='Sample', availableCopies=2}, Book{id=1, title='Clean Code', author='Robert C. Martin', publicationYear=2008, genre='Programming', availableCopies=3}]

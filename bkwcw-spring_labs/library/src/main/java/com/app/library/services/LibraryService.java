@@ -1,106 +1,199 @@
 package com.app.library.services;
 
+// LAB 3: annotated for Lab 3 identification
+
 import com.app.library.models.Book;
 import com.app.library.models.Member;
 import com.app.library.models.BorrowingRecord;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Responsibility: manage in-memory lists for Books, Members and BorrowingRecords
+ * and contain all business logic (borrowing/returning, id generation).
+ */
 @Service
 public class LibraryService {
 
-    private Map<Long, Book> books = new HashMap<Long, Book>();
-    private Map<Long, Member> members = new HashMap<Long, Member>();
-    private Map<Long, BorrowingRecord> borrowingRecords = new HashMap<Long, BorrowingRecord>();
+    private final List<Book> books = new ArrayList<>();
+    private final List<Member> members = new ArrayList<>();
+    private final List<BorrowingRecord> borrowingRecords = new ArrayList<>();
+
+    private long nextBookId = 1L;
+    private long nextMemberId = 1L;
+    private long nextRecordId = 1L;
 
     // ==================== Book Methods ====================
 
-    // Get all books
-    public Collection<Book> getAllBooks() {
-        return books.values();
+    public List<Book> getAllBooks() {
+        return books;
     }
 
-    // Get a book by ID
-    public Book getBookById(Long id) {
-        return books.get(id);
+    public Optional<Book> getBookById(Long id) {
+        for (Book b : books) {
+            if (b.getId() != null && b.getId().equals(id)) {
+                return Optional.of(b);
+            }
+        }
+        return Optional.empty();
     }
 
-    // Add a new book
-    public void addBook(Book book) {
-        books.put(book.getId(), book);
+    public Book addBook(Book book) {
+        // Assign id if not provided
+        if (book.getId() == null) {
+            book.setId(nextBookId++);
+        }
+        books.add(book);
+        return book;
     }
 
-    // Update a book
-    public void updateBook(Book updatedBook) {
-        books.put(updatedBook.getId(), updatedBook);
+    public Optional<Book> updateBook(Book updatedBook) {
+        if (updatedBook.getId() == null) {
+            return Optional.empty();
+        }
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId().equals(updatedBook.getId())) {
+                books.set(i, updatedBook);
+                return Optional.of(updatedBook);
+            }
+        }
+        return Optional.empty();
     }
 
-    // Delete a book by ID
-    public void deleteBook(Long id) {
-        books.remove(id);
+    public boolean deleteBook(Long id) {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId().equals(id)) {
+                books.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     // ==================== Member Methods ====================
 
-    // Get all members
-    public Collection<Member> getAllMembers() {
-        return members.values();
+    public List<Member> getAllMembers() {
+        return members;
     }
 
-    // Get a member by ID
-    public Member getMemberById(Long id) {
-        return members.get(id);
+    public Optional<Member> getMemberById(Long id) {
+        for (Member m : members) {
+            if (m.getId() != null && m.getId().equals(id)) {
+                return Optional.of(m);
+            }
+        }
+        return Optional.empty();
     }
 
-    // Add a new member
-    public void addMember(Member member) {
-        members.put(member.getId(), member);
+    public Member addMember(Member member) {
+        if (member.getId() == null) {
+            member.setId(nextMemberId++);
+        }
+        members.add(member);
+        return member;
     }
 
-    // Update a member
-    public void updateMember(Member updatedMember) {
-        members.put(updatedMember.getId(), updatedMember);
+    public Optional<Member> updateMember(Member updatedMember) {
+        if (updatedMember.getId() == null) {
+            return Optional.empty();
+        }
+        for (int i = 0; i < members.size(); i++) {
+            if (members.get(i).getId().equals(updatedMember.getId())) {
+                members.set(i, updatedMember);
+                return Optional.of(updatedMember);
+            }
+        }
+        return Optional.empty();
     }
 
-    // Delete a member by ID
-    public void deleteMember(Long id) {
-        members.remove(id);
+    public boolean deleteMember(Long id) {
+        for (int i = 0; i < members.size(); i++) {
+            if (members.get(i).getId().equals(id)) {
+                members.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
-    // ==================== BorrowingRecord Methods ====================
+    // ==================== BorrowingRecord Methods (business logic here) ====================
 
-    // Get all borrowing records
-    public Collection<BorrowingRecord> getAllBorrowingRecords() {
-        return borrowingRecords.values();
+    public List<BorrowingRecord> getAllBorrowingRecords() {
+        return borrowingRecords;
     }
 
-    // Borrow a book (create a new borrowing record)
-    public void borrowBook(BorrowingRecord record) {
-        System.out.println(record);
-        // Set borrow date and due date (e.g., due date = borrow date + 14 days)
+    public Optional<BorrowingRecord> getBorrowingRecordById(Long id) {
+        for (BorrowingRecord r : borrowingRecords) {
+            if (r.getId() != null && r.getId().equals(id)) {
+                return Optional.of(r);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Borrow a book: resolves provided book/member (by id inside the passed objects),
+     * checks availability, sets borrowDate/dueDate, decreases availableCopies,
+     * assigns record id and stores it.
+     */
+    public Optional<BorrowingRecord> borrowBook(BorrowingRecord record) {
+        if (record == null || record.getBook() == null || record.getMember() == null) {
+            return Optional.empty();
+        }
+
+        Long bookId = record.getBook().getId();
+        Long memberId = record.getMember().getId();
+        if (bookId == null || memberId == null) {
+            return Optional.empty();
+        }
+
+        Optional<Book> bookOpt = getBookById(bookId);
+        Optional<Member> memberOpt = getMemberById(memberId);
+
+        if (!bookOpt.isPresent() || !memberOpt.isPresent()) {
+            return Optional.empty();
+        }
+
+        Book book = bookOpt.get();
+        if (book.getAvailableCopies() <= 0) {
+            return Optional.empty();
+        }
+
+        // Business rules: set dates and decrease availableCopies
+        record.setId(nextRecordId++);
         record.setBorrowDate(LocalDate.now());
         record.setDueDate(LocalDate.now().plusDays(14));
-        borrowingRecords.put(record.getId(), record);
-        // Decrease the available copies of the book
-        System.out.println("record.getBookId() " + record.getBookId());
-        System.out.println("book " + books.get(record.getBookId()));
-        Book book = books.get(record.getBookId());
+        record.setBook(book);
+        record.setMember(memberOpt.get());
+
         book.setAvailableCopies(book.getAvailableCopies() - 1);
+        borrowingRecords.add(record);
+        return Optional.of(record);
     }
 
-    // Return a book (update the borrowing record with the return date)
-    public void returnBook(Long recordId, LocalDate returnDate) {
-        BorrowingRecord record = borrowingRecords.get(recordId);
-        // Increase the available copies of the book
-        Book book = books.get(record.getBookId());
-        book.setAvailableCopies(book.getAvailableCopies() +1 );
+    /**
+     * Return a book: find record, set returnDate, increase availableCopies.
+     */
+    public Optional<BorrowingRecord> returnBook(Long recordId) {
+        Optional<BorrowingRecord> recOpt = getBorrowingRecordById(recordId);
+        if (!recOpt.isPresent()) {
+            return Optional.empty();
+        }
+        BorrowingRecord rec = recOpt.get();
+        if (rec.getReturnDate() != null) {
+            // already returned
+            return Optional.of(rec);
+        }
+        rec.setReturnDate(LocalDate.now());
+        Book book = rec.getBook();
+        if (book != null) {
+            book.setAvailableCopies(book.getAvailableCopies() + 1);
+        }
+        return Optional.of(rec);
     }
 }

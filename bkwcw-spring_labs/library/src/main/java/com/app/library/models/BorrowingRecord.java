@@ -1,35 +1,37 @@
 package com.app.library.models;
 
+// LAB 3: annotated for Lab 3 identification
+
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Model: BorrowingRecord
+ * Responsibility: represent a borrowing transaction linking a Book and a Member
+ * This class accepts either nested `book`/`member` objects or `bookId`/`memberId` in JSON.
+ */
 public class BorrowingRecord {
 
-	private Long id;
+    private Long id;
 
-	@JsonProperty("bookId")
-	private Long bookId;
-    
-	@JsonProperty("memberId")
-	private Long memberId;
+    // The actual Book and Member objects involved in this record
+    private Book book;
+    private Member member;
 
     private LocalDate borrowDate;
     private LocalDate returnDate;
     private LocalDate dueDate;
 
-    // Default constructor
     public BorrowingRecord() {}
 
-    // Parameterized constructor
-    public BorrowingRecord(Long bookId, Long memberId, LocalDate borrowDate, LocalDate dueDate) {
-        this.bookId = bookId;
-        this.memberId = memberId;
+    public BorrowingRecord(Book book, Member member, LocalDate borrowDate, LocalDate dueDate) {
+        this.book = book;
+        this.member = member;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -38,20 +40,20 @@ public class BorrowingRecord {
         this.id = id;
     }
 
-    public Long getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMember(Long memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public LocalDate getBorrowDate() {
@@ -78,13 +80,41 @@ public class BorrowingRecord {
         this.dueDate = dueDate;
     }
 
-    // toString
+    // JSON-friendly accessors so clients can send {"bookId":1, "memberId":2}
+    @JsonProperty("bookId")
+    public void setBookId(Long bookId) {
+        if (bookId != null) {
+            Book b = new Book();
+            b.setId(bookId);
+            this.book = b;
+        }
+    }
+
+    @JsonProperty("memberId")
+    public void setMemberId(Long memberId) {
+        if (memberId != null) {
+            Member m = new Member();
+            m.setId(memberId);
+            this.member = m;
+        }
+    }
+
+    @JsonProperty("bookId")
+    public Long getBookId() {
+        return (book != null) ? book.getId() : null;
+    }
+
+    @JsonProperty("memberId")
+    public Long getMemberId() {
+        return (member != null) ? member.getId() : null;
+    }
+
     @Override
     public String toString() {
         return "BorrowingRecord{" +
                 "id=" + id +
-                ", bookId=" + bookId +
-                ", memberId=" + memberId +
+                ", book=" + (book != null ? book.getId() : null) +
+                ", member=" + (member != null ? member.getId() : null) +
                 ", borrowDate=" + borrowDate +
                 ", returnDate=" + returnDate +
                 ", dueDate=" + dueDate +
